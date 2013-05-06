@@ -4,12 +4,12 @@
 
 Add this into config/app.php (ServiceProvider)
 
-<code>
+```php
     'Witooh\TagBuilder\TagBuilderServiceProvider',
-</code>
+```
 
 and (alias)
 
-<code>
+```php
     'Tag' => 'Witooh\TagBuilder\Facades\Tag',
-</code>
+```
