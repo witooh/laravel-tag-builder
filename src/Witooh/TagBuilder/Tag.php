@@ -5,23 +5,47 @@ namespace Witooh\TagBuilder;
 class Tag
 {
 
+    /**
+     * @var string
+     */
     private $tag;
-    private $attribute;
-    private $id;
-    private $inner_html;
-    private $beforeInnerHtml;
-    private $afterInnerHtml;
 
+    /**
+     * @var array
+     */
+    private $attribute;
+
+    /**
+     * @var string
+     */
+    private $id;
+
+    /**
+     * @var array
+     */
+    private $inner_html;
+
+    /**
+     * Make Tag object
+     *
+     * @param $tag
+     * @return Tag
+     */
     public function make($tag)
     {
-        $this->tag = $tag;
-        $this->attribute = array();
-        $this->inner_html = '';
-        $this->afterInnerHtml = array();
-        $this->beforeInnerHtml = array();
+        $this->tag        = $tag;
+        $this->attribute  = array();
+        $this->inner_html = array();
+
         return clone $this;
     }
 
+    /**
+     * Set ID Attribute of Html
+     *
+     * @param string $id
+     * @return $this
+     */
     public function setId($id)
     {
         $this->id = ' id="' . $id . '"';
@@ -29,6 +53,13 @@ class Tag
         return $this;
     }
 
+    /**
+     * Add Attribute of Html Tag
+     *
+     * @param string $name
+     * @param string $value
+     * @return $this
+     */
     public function attr($name, $value)
     {
         $this->attribute[$name] = $value;
@@ -36,6 +67,12 @@ class Tag
         return $this;
     }
 
+    /**
+     * Remove Attribute of Html Tag
+     *
+     * @param string $name
+     * @return $this
+     */
     public function removeAttribute($name)
     {
         unset($this->attribute[$name]);
@@ -43,55 +80,58 @@ class Tag
         return $this;
     }
 
-    public function innerHtml($str)
+    /**
+     * Insert Html to inner html
+     *
+     * @param Tag|string $tag
+     * @return $this
+     */
+    public function innerHtml($tag)
     {
-        $this->inner_html = $str;
+        $this->inner_html[] = $tag;
 
         return $this;
     }
 
-    public function appendInnerHtml($str){
-        $this->inner_html .= $str;
-
-        return $this;
-    }
-
-    public function beforeInnerHtml(Tag $tag){
-        $this->beforeInnerHtml[] = $tag;
-
-        return $this;
-    }
-
-    public function afterInnerHtml(Tag $tag){
-        $this->afterInnerHtml[] = $tag;
-
-        return $this;
-    }
-
+    /**
+     * Generate Tag to Html string
+     *
+     * @return string
+     */
     public function toString()
     {
         $str = '';
         $str .= $this->createOpenTag();
-        $str .= $this->TagsToString($this->beforeInnerHtml);
-        $str .= $this->inner_html;
-        $str .= $this->TagsToString($this->afterInnerHtml);
+        $str .= $this->innerHtmlToString();
         $str .= $this->createCloseTag();
 
         return $str;
     }
 
-    private function TagsToString($tags){
-        if(empty($tags))
-            return '';
-
-        $str = '';
-        foreach($tags as $tag){
-            $str .= $tag->toString();
+    /**
+     * Generate inner html array to string
+     *
+     * @return string
+     */
+    private function innerHtmlToString()
+    {
+        $result = '';
+        foreach ($this->inner_html as $tag) {
+            if ($tag instanceof Tag) {
+                $result .= $tag->toString();
+            } elseif (is_string($tag)) {
+                $result .= $tag;
+            }
         }
 
-        return $str;
+        return $result;
     }
 
+    /**
+     * Create open tag to string
+     *
+     * @return string
+     */
     private function createOpenTag()
     {
         $openTag = '<' . $this->tag;
@@ -102,6 +142,11 @@ class Tag
         return $openTag;
     }
 
+    /**
+     * Merge Html Attribute to string
+     *
+     * @return string
+     */
     private function mergeAttributes()
     {
         $attribute = '';
@@ -112,6 +157,11 @@ class Tag
         return $attribute;
     }
 
+    /**
+     * Create close tag to string
+     *
+     * @return string
+     */
     private function createCloseTag()
     {
         return '</' . $this->tag . '>';
