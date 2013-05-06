@@ -1,6 +1,6 @@
 <h1>Html Tag Builder</h1>
 
-<h3>Install</h3>
+<h2>Install</h2>
 
 Add this into config/app.php (ServiceProvider)
 
