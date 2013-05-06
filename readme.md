@@ -5,11 +5,11 @@
 Add this into config/app.php (ServiceProvider)
 
 ```php
-    'Witooh\TagBuilder\TagBuilderServiceProvider',
+'Witooh\TagBuilder\TagBuilderServiceProvider',
 ```
 
 and (alias)
 
 ```php
-    'Tag' => 'Witooh\TagBuilder\Facades\Tag',
+'Tag' => 'Witooh\TagBuilder\Facades\Tag',
 ```
