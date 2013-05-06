@@ -2,14 +2,20 @@
 
 <h2>Install</h2>
 
-Add this into config/app.php (ServiceProvider)
+Add this into config/app.php
 
 ```php
-'Witooh\TagBuilder\TagBuilderServiceProvider',
+'providers' => array(
+    ...
+    ...
+    'Witooh\TagBuilder\TagBuilderServiceProvider',
 ```
 
-and (alias)
+and
 
 ```php
-'Tag' => 'Witooh\TagBuilder\Facades\Tag',
+'aliases' => array(
+    ...
+    ...
+    'Tag' => 'Witooh\TagBuilder\Facades\Tag',
 ```
